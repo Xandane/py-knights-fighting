@@ -1,4 +1,5 @@
 from app.dict_character.battle_person import Knight
+from typing import Union
 
 
 def _normalize(entity: dict) -> Knight:
@@ -13,11 +14,11 @@ def _normalize(entity: dict) -> Knight:
     return name, stats
 
 
-def _dict_to_knight(data: dict) -> Knight:
+def _dict_to_knight(data: Knight) -> Knight:
     name = data.get("name", "Unknown")
-    power = data.get("power", 0) or 0
-    hp = data.get("hp", 0) or 0
-    armour = data.get("armour") or []      # гарантуємо список
+    power = data.get("power", 0)
+    hp = data.get("hp", 0)
+    armour = data.get("armour") or []
     weapon = data.get("weapon")
     potion = data.get("potion")
     return Knight(
@@ -31,7 +32,8 @@ def _dict_to_knight(data: dict) -> Knight:
 
 
 class Battle:
-    def generate_battle(self, entity_a: dict, entity_b: dict) -> dict:
+    def generate_battle(self, entity_a: Union[dict, Knight],
+                        entity_b: Union[dict, Knight]) -> dict:
         if isinstance(entity_a, dict):
             entity_a = _dict_to_knight(entity_a)
         if isinstance(entity_b, dict):

@@ -8,35 +8,18 @@ def battle(config: dict) -> dict:
     red_knight = config["red_knight"]
     result1 = Battle().generate_battle(lancelot, mordred)
     result2 = Battle().generate_battle(arthur, red_knight)
-    final = {
-        "Lancelot": max(
-            0,
-            result1.get(
-                lancelot["name"],
-                result1.get("Lancelot"),
-            ),
-        ),
-        "Mordred": max(
-            0,
-            result1.get(
-                mordred["name"],
-                result1.get("Mordred"),
-            ),
-        ),
-        "Arthur": max(
-            0,
-            result2.get(
-                arthur["name"],
-                result2.get("Arthur"),
-            ),
-        ),
-        "Red Knight": max(
-            0,
-            result2.get(
-                red_knight["name"],
-                result2.get("Red Knight"),
-            ),
-        ),
-    }
+    battles = [
+        (lancelot, result1),
+        (mordred, result1),
+        (arthur, result2),
+        (red_knight, result2),
+    ]
+    final = {}
+    for knight_cfg, res in battles:
+        name = knight_cfg["name"]
+        hp = res.get(name, res.get(name.title()))
+        raw_hp = res.get(name, res.get(name.title(), 0))
+        hp = max(0, raw_hp)
+        final[name] = hp
 
     return final
