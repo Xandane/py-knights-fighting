@@ -4,8 +4,8 @@ from typing import Optional, List
 class Knight:
     def __init__(self, name: str, power: int, hp: int,
                  armour: Optional[List[dict]] = None,
-                 weapon: Optional[List[dict]] = None,
-                 potion: Optional[List[dict]] = None) -> None:
+                 weapon: Optional[dict] = None,
+                 potion: Optional[dict] = None) -> None:
         self.name = name
         self.power = power
         self.hp = hp

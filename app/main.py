@@ -1,25 +1,22 @@
 from app.battle_generation.battle import Battle
+from typing import Tuple, Dict
 
 
-def battle(config: dict) -> dict:
-    lancelot = config["lancelot"]
-    mordred = config["mordred"]
-    arthur = config["arthur"]
-    red_knight = config["red_knight"]
-    result1 = Battle().generate_battle(lancelot, mordred)
-    result2 = Battle().generate_battle(arthur, red_knight)
-    battles = [
-        (lancelot, result1),
-        (mordred, result1),
-        (arthur, result2),
-        (red_knight, result2),
+def battle(config: dict) -> Tuple[str, dict]:
+    pairs = [
+        ("lancelot", "mordred"),
+        ("arthur", "red_knight"),
     ]
-    final = {}
-    for knight_cfg, res in battles:
-        name = knight_cfg["name"]
-        hp = res.get(name, res.get(name.title()))
-        raw_hp = res.get(name, res.get(name.title(), 0))
-        hp = max(0, raw_hp)
-        final[name] = hp
+
+    final: Dict[str, int] = {}
+    battle_gen = Battle()
+    for key_a, key_b in pairs:
+        a_cfg = config[key_a]
+        b_cfg = config[key_b]
+        result = battle_gen.generate_battle(a_cfg, b_cfg)
+        for knight_cfg in (a_cfg, b_cfg):
+            name = knight_cfg["name"]
+            raw_hp = result.get(name, result.get(name.title(), 0))
+            final[name] = max(0, raw_hp)
 
     return final

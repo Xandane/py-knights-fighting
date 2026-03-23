@@ -1,8 +1,8 @@
 from app.dict_character.battle_person import Knight
-from typing import Union
+from typing import Union, Tuple
 
 
-def _normalize(entity: dict) -> Knight:
+def _normalize(entity: dict) -> Tuple[str, dict]:
     if isinstance(entity, Knight):
         return entity.name, entity.to_stats()
     name = entity.get("name") or "Unknown"
